@@ -28,6 +28,10 @@ class SendDepartmentEmailTool
         private string $fromAddress
     ) {}
 
+    /**
+     * @param string $departmentEmail The department email address to route the issue to.
+     *                                 Must be exactly one of the addresses listed in the system prompt.
+     */
     public function __invoke(string $departmentEmail): bool
     {
         if (!in_array($departmentEmail, self::ALLOWED_DEPARTMENTS, true)) {
