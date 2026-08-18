@@ -1,0 +1,48 @@
+name: ai-message-router
+services:
+  php:
+    container_name: ai-message-router-php
+    build:
+      context: ./docker/php
+    restart: always
+    volumes:
+      - ./app:/var/www/html
+    ports:
+      - 3005:8000
+  ollama:
+    container_name: ai-message-router-ollama
+    image: ollama/ollama:0.32.14
+    ports:
+      - "3006:11434"
+    volumes:
+      - ./ollama/.ollama:/root/.ollama
+    restart: always
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+  ollama-pull:
+    container_name: ai-message-router-ollama-pull
+    image: ollama/ollama:0.32.14
+    depends_on:
+      ollama:
+        condition: service_healthy
+    entrypoint: ["ollama", "pull", "qwen2.5:3b"]
+    environment:
+      OLLAMA_HOST: ollama:11434
+
+  mailhog:
+    container_name: ai-message-router-mailhog
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - "8025:8025"
+      - "1025:1025"
