@@ -13,4 +13,4 @@ EXPOSE 8000
 
 WORKDIR /var/www/html
 
-CMD ["php", "-S", "0.0.0.0:8000", "-t", "public", "public/index.php"]
+CMD ["sh", "-c", "[ -d vendor ] || composer install --no-interaction; php -S 0.0.0.0:8000 -t public public/index.php"]
