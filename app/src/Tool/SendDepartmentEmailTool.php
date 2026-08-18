@@ -25,7 +25,7 @@ class SendDepartmentEmailTool
         private MailerInterface $mailer,
         private RequestStack $requestStack,
         #[Autowire(env: 'MAILER_FROM_ADDRESS')]
-        private string $fromAddress,
+        private string $fromAddress
     ) {}
 
     public function __invoke(string $departmentEmail): bool
@@ -38,12 +38,13 @@ class SendDepartmentEmailTool
         $data = $request->toArray();
         $senderEmail = $data['email'];
         $message = $data['message'];
+        $subject = $data['subject'] ?? 'New Issue Reported';
 
         $email = (new Email())
             ->from($this->fromAddress)
             ->replyTo($senderEmail)
             ->to($departmentEmail)
-            ->subject('New Issue Reported')
+            ->subject($subject)
             ->text($message);
 
         try {
