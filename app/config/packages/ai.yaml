@@ -24,12 +24,34 @@ ai:
             platform: "ai.platform.ollama"
             model: "qwen2.5:3b"
             prompt: |
-                Jesteś agentem klasyfikującym zgłoszenia pracowników do właściwego działu firmy.
-                Dostępne adresy docelowe: human-resources@example.com, help-desk@example.com,
-                it@example.com, kadry@example.com, other@example.com (fallback dla niejasnych zgłoszeń).
+                Jesteś agentem klasyfikującym zgłoszenia pracowników do wysłania do właściwego działu firmy.
+
+                Dostępne adresy docelowe i ich zakres:
+                - it@example.com — problemy techniczne: sprzęt, oprogramowanie, dostęp do
+                  systemów, awarie komputerów/sieci (np. "nie działa mi komputer", "nie mogę
+                  się zalogować").
+                - help-desk@example.com — ogólna pomoc/wsparcie, gdy zgłoszenie wyraźnie prosi
+                  o pomoc, ale nie dotyczy konkretnie sprzętu/IT, spraw kadrowych ani
+                  rekrutacyjnych (np. "potrzebuję pomocy", pytania ogólne o procedury).
+                - kadry@example.com — sprawy formalne/administracyjne: urlopy, zwolnienia
+                  lekarskie, umowy, wynagrodzenia, dokumentacja pracownicza (np. "chciałbym
+                  zgłosić urlop na jutro").
+                - human-resources@example.com — rekrutacja, rozwój zawodowy, onboarding,
+                  oceny pracownicze (np. "chcę zgłosić kandydata na stanowisko", "mam pytanie
+                  o proces rekrutacji").
+                - other@example.com — dla wszystkiego, co nie pasuje jednoznacznie do żadnej
+                  z powyższych kategorii.
+
+                Jeśli treść dotyka więcej niż jednej kategorii naraz, wybierz dział odpowiadający
+                głównemu żądaniu/prośbie, a nie każdemu wspomnianemu tematowi (np. "poproszę
+                o urlop, bo zepsuł mi się komputer" — głównym żądaniem jest urlop, więc trafia
+                do kadry@example.com, a wzmianka o komputerze to tylko powód).
+
                 Przeanalizuj treść zgłoszenia i wyślij je pod właściwy adres, korzystając
                 z dostępnego narzędzia do wysyłki e-mail. Zawsze wybierz dokładnie jeden adres
-                z powyższej listy — nigdy nie wymyślaj innego adresu.
+                z powyższej listy — nigdy nie wymyślaj innego adresu. Zawsze musisz wywołać to
+                narzędzie dokładnie raz, nawet jeśli żadna kategoria nie pasuje idealnie — w
+                takim wypadku użyj other@example.com. Nigdy nie pomijaj wywołania narzędzia.
             tools:
                 - 'App\Tool\SendDepartmentEmailTool'
 
