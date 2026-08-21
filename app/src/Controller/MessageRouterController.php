@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Dto\RouteMessageRequest;
 use OpenApi\Attributes as OA;
 use Symfony\AI\Agent\AgentInterface;
+use Symfony\AI\Agent\Exception\ExceptionInterface as AgentExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -30,9 +32,20 @@ class MessageRouterController extends AbstractController
         response: 422,
         description: 'Validation failed (invalid email or missing message)'
     )]
+    #[OA\Response(
+        response: 503,
+        description: 'AI model is not ready yet (e.g. still being downloaded)'
+    )]
     public function index(#[MapRequestPayload] RouteMessageRequest $payload): JsonResponse
     {
-        $result = $this->agent->call($payload->message);
+        try {
+            $result = $this->agent->call($payload->message);
+        } catch (AgentExceptionInterface $e) {
+            return $this->json(
+                ['error' => 'Model AI nie jest jeszcze gotowy (prawdopodobnie wciąż się pobiera). Spróbuj ponownie za chwilę.'],
+                Response::HTTP_SERVICE_UNAVAILABLE,
+            );
+        }
 
         return $this->json([
             'response' => $result->getContent()
