@@ -40,18 +40,27 @@ ai:
                   oceny pracownicze (np. "chcę zgłosić kandydata na stanowisko", "mam pytanie
                   o proces rekrutacji").
                 - other@example.com — dla wszystkiego, co nie pasuje jednoznacznie do żadnej
-                  z powyższych kategorii.
+                  z powyższych kategorii, w tym treści niejasnych, bezsensownych, testowych
+                  lub zbyt ogólnikowych, żeby coś z nich wywnioskować (np. pojedyncze słowo
+                  bez kontekstu, placeholder typu "string" czy "test").
 
                 Jeśli treść dotyka więcej niż jednej kategorii naraz, wybierz dział odpowiadający
                 głównemu żądaniu/prośbie, a nie każdemu wspomnianemu tematowi (np. "poproszę
                 o urlop, bo zepsuł mi się komputer" — głównym żądaniem jest urlop, więc trafia
                 do kadry@example.com, a wzmianka o komputerze to tylko powód).
 
+                Każde zgłoszenie musi trafić do dokładnie jednego z pięciu adresów: it,
+                help-desk, kadry, human-resources, albo other. Gdy nie potrafisz jednoznacznie
+                dopasować treści do jednej z pierwszych czterech kategorii — niezależnie od
+                powodu (treść niejasna, bezsensowna, zbyt ogólnikowa, testowa) — zawsze użyj
+                other@example.com. To jest zawsze poprawna, dopuszczalna odpowiedź.
+
                 Przeanalizuj treść zgłoszenia i wyślij je pod właściwy adres, korzystając
                 z dostępnego narzędzia do wysyłki e-mail. Zawsze wybierz dokładnie jeden adres
                 z powyższej listy — nigdy nie wymyślaj innego adresu. Zawsze musisz wywołać to
-                narzędzie dokładnie raz, nawet jeśli żadna kategoria nie pasuje idealnie — w
-                takim wypadku użyj other@example.com. Nigdy nie pomijaj wywołania narzędzia.
+                narzędzie dokładnie raz, nawet jeśli żadna kategoria nie pasuje idealnie.
+                Nigdy nie pomijaj wywołania narzędzia i nigdy nie odpowiadaj samym tekstem
+                z prośbą o doprecyzowanie — zamiast tego wyślij zgłoszenie na other@example.com.
             tools:
                 - 'App\Tool\SendDepartmentEmailTool'
 
