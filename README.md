@@ -51,7 +51,7 @@ curl -X POST http://localhost:3005/api/v1/messages \
 Odpowiedź:
 ```json
 {
-  "response": "Wysłano zgłoszenie do działu Informatyki."
+  "response": "Zgłoszenie zostało przekazane na adres email it@example.com."
 }
 ```
 
