@@ -8,6 +8,7 @@ use App\Tool\SendDepartmentEmailTool;
 use OpenApi\Attributes as OA;
 use Symfony\AI\Agent\AgentInterface;
 use Symfony\AI\Agent\Exception\ExceptionInterface as AgentExceptionInterface;
+use Symfony\AI\Platform\Exception\ExceptionInterface as PlatformExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,7 +45,7 @@ class MessageRouterController extends AbstractController
     {
         try {
             $result = $this->agent->call($payload->message);
-        } catch (AgentExceptionInterface $e) {
+        } catch (AgentExceptionInterface|PlatformExceptionInterface $e) {
             return $this->json(
                 ['error' => 'Model AI nie jest jeszcze gotowy (prawdopodobnie wciąż się pobiera). Spróbuj ponownie za chwilę.'],
                 Response::HTTP_SERVICE_UNAVAILABLE,
