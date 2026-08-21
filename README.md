@@ -108,6 +108,16 @@ wysyłkowego adres działu wybrany przez model jest dodatkowo weryfikowany
 względem białej listy dozwolonych adresów (model to LLM — może się pomylić;
 niepoprawna wartość jest zamieniana na fallback `other@example.com`).
 
+**Deterministyczny fallback wywołania narzędzia**: ręcznie zweryfikowano
+(wielokrotne, identyczne requesty przez curl), że dla całkowicie niejasnych/pustych
+treści (np. placeholder "string") lokalny model (`qwen2.5:3b`) mimo jednoznacznej instrukcji 
+w prompcie **nie zawsze** wywołuje narzędzie — w części przypadków odpowiada tekstem zamiast 
+wykonać akcję. Kontroler śledzi to przez współdzielony (przez DI) `ToolInvocationTracker`
+i jeśli narzędzie faktycznie się nie wykonało, sam bezpośrednio wywołuje je
+z `other@example.com` — gwarantując wysyłkę niezależnie od tego, czy model
+poprawnie zastosował się do instrukcji. To świadomy, jawny mechanizm
+zabezpieczający — dokumentowany tutaj i w kodzie (`MessageRouterController`, `ToolInvocationTracker`).
+
 **Dokumentacja API**: `nelmio/api-doc-bundle`, wystawiona pod `/api/v1/docs`
 (interfejs Swagger UI, z możliwością testowania requestów bezpośrednio z
 przeglądarki), surowy JSON specyfikacji OpenAPI dostępny osobno pod

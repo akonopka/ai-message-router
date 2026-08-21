@@ -2,6 +2,7 @@
 
 namespace App\Tool;
 
+use App\Agent\ToolInvocationTracker;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
@@ -24,6 +25,7 @@ class SendDepartmentEmailTool
     public function __construct(
         private MailerInterface $mailer,
         private RequestStack $requestStack,
+        private ToolInvocationTracker $tracker,
         #[Autowire(env: 'MAILER_FROM_ADDRESS')]
         private string $fromAddress
     ) {}
@@ -34,6 +36,8 @@ class SendDepartmentEmailTool
      */
     public function __invoke(string $departmentEmail): bool
     {
+        $this->tracker->invoked = true;
+
         if (!in_array($departmentEmail, self::ALLOWED_DEPARTMENTS, true)) {
             $departmentEmail = 'other@example.com';
         }
