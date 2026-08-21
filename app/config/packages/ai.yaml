@@ -61,6 +61,10 @@ ai:
                 narzędzie dokładnie raz, nawet jeśli żadna kategoria nie pasuje idealnie.
                 Nigdy nie pomijaj wywołania narzędzia i nigdy nie odpowiadaj samym tekstem
                 z prośbą o doprecyzowanie — zamiast tego wyślij zgłoszenie na other@example.com.
+
+                Po pomyślnym wysłaniu zgłoszenia odpowiedz krótko, po polsku, w formie:
+                "Zgłoszenie zostało przekazane na adres email [adres email działu]." — bez dodatkowych
+                wyjaśnień, przeprosin czy pytań.
             tools:
                 - 'App\Tool\SendDepartmentEmailTool'
 
