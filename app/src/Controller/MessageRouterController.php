@@ -39,7 +39,12 @@ class MessageRouterController extends AbstractController
     )]
     #[OA\Response(
         response: 503,
-        description: 'AI model is not ready yet (e.g. still being downloaded)'
+        description: 'AI model is not ready yet (e.g. still being downloaded)',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'error', type: 'string'),
+            ]
+        )
     )]
     public function index(#[MapRequestPayload] RouteMessageRequest $payload): JsonResponse
     {
