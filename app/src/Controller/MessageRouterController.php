@@ -39,7 +39,7 @@ class MessageRouterController extends AbstractController
     )]
     #[OA\Response(
         response: 503,
-        description: 'AI model is not ready yet (e.g. still being downloaded)',
+        description: 'AI model is unavailable (e.g. still downloading, or Ollama container not running)',
         content: new OA\JsonContent(
             properties: [
                 new OA\Property(property: 'error', type: 'string'),
@@ -61,7 +61,7 @@ class MessageRouterController extends AbstractController
             $result = $this->agent->call($payload->message);
         } catch (AgentExceptionInterface | PlatformExceptionInterface) {
             return $this->json(
-                ['error' => 'Model AI nie jest jeszcze gotowy (prawdopodobnie wciąż się pobiera). Spróbuj ponownie za chwilę.'],
+                ['error' => 'Model AI jest niedostępny (np. wciąż się pobiera albo kontener Ollama nie działa). Spróbuj ponownie za chwilę.'],
                 Response::HTTP_SERVICE_UNAVAILABLE,
             );
         }
