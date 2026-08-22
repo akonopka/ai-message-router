@@ -13,4 +13,5 @@ namespace App\Agent;
 class ToolInvocationTracker
 {
     public bool $invoked = false;
+    public bool $sent = false;
 }

@@ -46,6 +46,15 @@ class MessageRouterController extends AbstractController
             ]
         )
     )]
+    #[OA\Response(
+        response: 502,
+        description: 'Message was classified but could not actually be sent (mail transport unavailable)',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'error', type: 'string'),
+            ]
+        )
+    )]
     public function index(#[MapRequestPayload] RouteMessageRequest $payload): JsonResponse
     {
         try {
@@ -66,9 +75,26 @@ class MessageRouterController extends AbstractController
         if (!$this->tracker->invoked) {
             ($this->tool)('other@example.com');
 
+            if (!$this->tracker->sent) {
+                return $this->json(
+                    ['error' => 'Nie udało się wysłać maila — sprawdź czy serwer pocztowy działa.'],
+                    Response::HTTP_BAD_GATEWAY,
+                );
+            }
+
             return $this->json([
                 'response' => 'Nie udało się jednoznacznie sklasyfikować zgłoszenia — przekazano do other@example.com.',
             ]);
+        }
+
+        // The tool was invoked (by the model), but the actual send may still
+        // have failed (e.g. mail transport down) — don't trust the model's
+        // own text in that case, it doesn't know the send failed either.
+        if (!$this->tracker->sent) {
+            return $this->json(
+                ['error' => 'Nie udało się wysłać maila — sprawdź czy serwer pocztowy działa.'],
+                Response::HTTP_BAD_GATEWAY,
+            );
         }
 
         return $this->json([

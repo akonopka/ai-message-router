@@ -34,7 +34,7 @@ class SendDepartmentEmailTool
      * @param string $departmentEmail The department email address to route the issue to.
      *                                 Must be exactly one of the addresses listed in the system prompt.
      */
-    public function __invoke(string $departmentEmail): bool
+    public function __invoke(string $departmentEmail): string
     {
         $this->tracker->invoked = true;
 
@@ -57,10 +57,13 @@ class SendDepartmentEmailTool
 
         try {
             $this->mailer->send($email);
-        } catch (TransportExceptionInterface) {
-            return false;
-        }
+            $this->tracker->sent = true;
 
-        return true;
+            return "Email sent to {$departmentEmail}.";
+        } catch (TransportExceptionInterface) {
+            $this->tracker->sent = false;
+
+            return "Failed to send email to {$departmentEmail}: mail transport unavailable.";
+        }
     }
 }
