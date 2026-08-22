@@ -101,6 +101,10 @@ class MessageRouterControllerTest extends WebTestCase
                 'Chcę zgłosić kandydata na stanowisko.',
                 'human-resources@example.com',
             ],
+            'Other question, no subject' => [
+                'Chcę zorganizować spotkanie z klientem w sprawie nowego projektu',
+                'other@example.com',
+            ],
         ];
     }
 }
