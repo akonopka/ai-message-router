@@ -46,7 +46,7 @@ class SendDepartmentEmailTool
         $data = $request->toArray();
         $senderEmail = $data['email'];
         $message = $data['message'];
-        $subject = $data['subject'] ?? 'New Issue Reported';
+        $subject = $data['subject'] ?? 'Nowe zgłoszenie';
 
         $email = (new Email())
             ->from($this->fromAddress)
