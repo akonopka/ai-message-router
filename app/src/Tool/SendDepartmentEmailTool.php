@@ -57,7 +57,7 @@ class SendDepartmentEmailTool
 
         try {
             $this->mailer->send($email);
-        } catch (TransportExceptionInterface $e) {
+        } catch (TransportExceptionInterface) {
             return false;
         }
 

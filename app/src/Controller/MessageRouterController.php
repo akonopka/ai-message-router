@@ -50,7 +50,7 @@ class MessageRouterController extends AbstractController
     {
         try {
             $result = $this->agent->call($payload->message);
-        } catch (AgentExceptionInterface|PlatformExceptionInterface $e) {
+        } catch (AgentExceptionInterface | PlatformExceptionInterface) {
             return $this->json(
                 ['error' => 'Model AI nie jest jeszcze gotowy (prawdopodobnie wciąż się pobiera). Spróbuj ponownie za chwilę.'],
                 Response::HTTP_SERVICE_UNAVAILABLE,
